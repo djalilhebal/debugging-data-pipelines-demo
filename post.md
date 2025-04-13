@@ -6,17 +6,10 @@ I've wondered what the hell is the deal with [Apache Jackrabbit][jackrabbit], We
 
 Now, they are starting to make sense.
 
-You can think of Apache Jackrabbit is an advanced headless CMS.
-- [ ] https://jackrabbit.apache.org/oak/docs/differences.html
-
-- [REST APIs | Adobe Experience Manager](https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/screens-as-cloud-service/developing-screens-cloud/rest-apis-screens-cloud)
-  * "AEM Screens provides a simple RESTful API that follows the Siren specification. It allows to navigate the content structure and send commands to devices in the environment."
-  * [ ] https://github.com/kevinswiber/siren
-
 
 ## Idea
 
-Think: Google Drive at home. Filestash.
+Think: A poor man's Google Drive.
 
 ### Background
 

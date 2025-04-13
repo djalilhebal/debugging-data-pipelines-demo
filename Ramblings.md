@@ -1,5 +1,36 @@
 # Ramblings
 
+WebDAV gives you a filesystem abstraction over HTTP, which is weirdly powerful. Almost forgotten tech that just works.
+
+About Jackrabbit:
+You can think of Apache Jackrabbit is an advanced headless CMS.
+  - [ ] https://jackrabbit.apache.org/oak/docs/differences.html
+
+  - [REST APIs | Adobe Experience Manager](https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/screens-as-cloud-service/developing-screens-cloud/rest-apis-screens-cloud)
+    * "AEM Screens provides a simple RESTful API that follows the Siren specification. It allows to navigate the content structure and send commands to devices in the environment."
+    * [ ] https://github.com/kevinswiber/siren
+
+Filestash gives you a web UI. You now have a poor man’s Google Drive without leaving local/dev context.
+Dockerize both and now you have disposable, reproducible environments. 
+
+Filestash is user-friendly.
+Just check [its demo][filestash-demo] and try opening Documents > Office.xlsx.
+Remarks:
+- It does not not supports sorting descending
+
+Why WebDAV?
+WebDAV is a standard, so it is future-proof enough.
+WebDAV is based on HTTP,  so the client itself should be simple to implement.
+WebDAV is supported by file managers like Windows Explorer and Mac OS' file manager [^ mac-webdav].
+There are many servers including Apache Jackrabbit, Apache Server, and many standalone ones. Again, future-proof.
+
+Alternatives:
+- [ ] MinIO could provide S3-compatible local storage.
+
+[filestash-demo]: https://demo.filestash.app/login?type=webdav&url=https%3A%2F%2Fwebdav.filestash.app&username=&password=
+
+[mac-webdav]: https://support.apple.com/en-gb/guide/mac-help/mchlp1546/mac "Connect to or disconnect from a WebDAV server on Mac – Apple Support (UK)"
+
 ---
 
 Tested:
