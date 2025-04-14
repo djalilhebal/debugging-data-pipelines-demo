@@ -1,3 +1,5 @@
+name: debug-drive
+
 services:
   app:
     container_name: filestash

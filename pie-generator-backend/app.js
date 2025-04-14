@@ -18,7 +18,7 @@ app.get('/pie', (req, res) => {
     return res.send('Bad request');
   }
 
-  pieService.process({ labels: keys, values })
+  pieService.generateExcel({ labels: keys, values })
     .then(excelBuffer => {
       res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       res.setHeader('Content-Disposition', 'attachment; filename="output.xlsx"');
@@ -34,3 +34,5 @@ app.get('/pie', (req, res) => {
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
+
+export default app;

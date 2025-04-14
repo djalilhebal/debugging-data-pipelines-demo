@@ -1,5 +1,5 @@
 {
-  "name": "webdav-omega",
+  "name": "pie-generator-backend",
   "version": "1.0.0",
   "scripts": {
     "start": "node app.js"
@@ -13,5 +13,8 @@
     "express": "^5.1.0",
     "skia-canvas": "^2.0.2",
     "webdav": "^5.8.0"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }

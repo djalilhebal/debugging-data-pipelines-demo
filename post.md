@@ -1,3 +1,9 @@
+---
+- cannonical_url: https://kunzite.cc/debugging-complex-sql-queries-structured-logging
+- date: 2025-04-12
+- audience: Intermediate backend developers, data engineers.
+---
+
 # Debugging data pipelines: From memory to file with WebDAV
 
 Saving and viewing ephemeral intermediate files or file-like data artifacts using WebDAV and Filestash. For a better DX.
@@ -6,7 +12,7 @@ I've always wondered what the hell was the deal with [Apache Jackrabbit][apache-
 
 Now, they are starting to make sense.
 
-Apache Jackrabbit is a low-level content repository—think of it as the storage layer behind a headless CMS[^not-cms]. It also supports WebDAV, which is what first got me interested.
+Apache Jackrabbit is a low-level content repository—think of it as a headless CMS[^not-cms] that also supports WebDAV. \
 I liked the idea of using it for its advanced features—node graphs, querying, tagging—but I couldn’t get it running locally.
 And honestly, I was overkill. A simple WebDAV server would do, so I tried a few and settled on `dufs`. It’s good enough for now. I might revisit Jackrabbit later if the extra features become useful.
 
@@ -109,7 +115,9 @@ Options:
 
 Imagine you are developing an analytics platform called Pie.
 
-This is how it works:
+**Operation:** Generate Excel files with pie charts from query parameters.
+
+**Steps:**
 
 - Get labels and their associated values from the request.
 
@@ -120,7 +128,8 @@ This is how it works:
 - Send that file as a response.
 
 Example:
-http://127.0.0.1:3000/pie?a=10&b=20&c=70
+- Local version: http://127.0.0.1:3000/pie?a=10&b=20&c=70
+- Or live version: https://debugging-data-pipelines-demo.vercel.app/pie?a=10&b=20&c=70
 
 It would generate an Excel file containing a pie chart:
 ![](./screenshot-pie-a-10-b-20-c-70.png)
@@ -176,8 +185,9 @@ I am not a DevOps engineer and even can can realize that.)
 It works.
 
 However, it needs more refinement:
-Mainly the data cleanup mechanisms.
-Following DevOps best practices.
+- Mainly the data cleanup mechanisms.
+- Following DevOps best practices.
+- Better security and access control. Filestash only needs read access.
 
 ---
 
