@@ -6,13 +6,12 @@ I've always wondered what the hell was the deal with [Apache Jackrabbit][apache-
 
 Now, they are starting to make sense.
 
-Apache Jackrabbit is a low-level content repository—think of it as the storage layer behind a headless CMS^[not-cms]. It also supports WebDAV, which is what first got me interested.
+Apache Jackrabbit is a low-level content repository—think of it as the storage layer behind a headless CMS[^not-cms]. It also supports WebDAV, which is what first got me interested.
 I liked the idea of using it for its advanced features—node graphs, querying, tagging—but I couldn’t get it running locally.
 And honestly, I was overkill. A simple WebDAV server would do, so I tried a few and settled on `dufs`. It’s good enough for now. I might revisit Jackrabbit later if the extra features become useful.
 
-[^not-cms]:  It's not a CMS itself, but you can build one on top of it. Adobe Experience Manager does this, exposing content via a RESTful API.
-  * See [AEM Screens – REST API][aem-rest-apis]
-  * It follows the [Siren specification][siren].
+[^not-cms]:  It's not a CMS itself, but you can build one on top of it. Adobe Experience Manager does this, exposing content via a RESTful API that follows the [Siren specification][siren].
+See [AEM Screens – REST API][aem-rest-apis]
 
 
 ## Idea
