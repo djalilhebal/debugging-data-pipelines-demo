@@ -1,5 +1,5 @@
 import Chart from 'chart.js/auto';
-import { Canvas } from 'skia-canvas';
+import { createCanvas } from 'canvas';
 
 function generateColors(count) {
   // Example: simple HSL-based dynamic palette
@@ -9,21 +9,19 @@ function generateColors(count) {
 export async function generatePieChart({ labels, values }) {
   const colors = generateColors(values.length);
 
-  const canvas = new Canvas(400, 300);
-  const chart = new Chart(
-    canvas, // TypeScript needs "as any" here
-    {
-      type: 'pie',
-      data: {
-        labels,
-        datasets: [{
-          data: values,
-        }],
+  const canvas = createCanvas(400, 300);
+  const chart = new Chart(canvas, {
+    type: 'pie',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
         backgroundColor: colors,
-      }
+      }]
     }
-  );
-  const pngBuffer = await canvas.toBuffer('png', { matte: 'white' });
+  });
+
+  const pngBuffer = canvas.toBuffer('image/png');
   chart.destroy();
   return pngBuffer;
 }

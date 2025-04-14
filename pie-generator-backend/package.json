@@ -8,10 +8,10 @@
   "license": "WTFLP",
   "type": "module",
   "dependencies": {
+    "canvas": "^2.11.2",
     "chart.js": "^4.4.8",
     "exceljs": "^4.4.0",
     "express": "^5.1.0",
-    "skia-canvas": "^2.0.2",
     "webdav": "^5.8.0"
   },
   "engines": {
