@@ -2,7 +2,7 @@
 
 - [x] Update `saveToWebdav`: Do not attempt to use the WebDAV client if WebDAV configs are undefined.
 
-- [x] Deploy the Pie Generator API
+- [x] Deploy the Pie Generator API to Vercel.
 
     * [ ] Turn it into a NextJS app.
 

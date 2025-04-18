@@ -6,10 +6,10 @@
 
 # Debugging data pipelines: From memory to file with WebDAV
 
-Debugging complex data pipelines often involves tracking ephemeral artifacts, such as Excel buffers, chart images, and transformed data frames.
-Normally, you log some JSON and squint at it. But what if you could just open it in a UI?
+Debugging complex data pipelines often involves keeping track of short-lived data--things like Excel buffers, normalized inputs, chart images, and transformed data frames. \
+You could log some JSON and start guessing: "Was it the parser in the transform step with the off-by-one error?" But what if you could... just open it in a UI?
 
-This post outlines a setup that turns transient data into inspectable artifacts, with almost zero friction, improving the (my) developer experience dramatically.
+This post outlines a setup that turns transient data into inspectable artifacts, with almost zero friction, improving (my) the developer experience dramatically.
 
 ---
 
@@ -18,10 +18,10 @@ I've always wondered what the hell was the deal with [Apache Jackrabbit][apache-
 Now, they are starting to make sense.
 
 Apache Jackrabbit is a low-level content repository—think of it as a headless CMS[^not-cms] that also supports WebDAV. \
-I liked the idea of using it for its advanced features—node graphs, querying, tagging—but I couldn’t get it running locally.
-And honestly, I was overkill. A simple WebDAV server would do, so I tried a few and settled on `dufs`. It’s good enough for now. I might revisit Jackrabbit later if the extra features become useful.
+I liked the idea of using it for its advanced features—node graphs, querying, tagging—but I couldn’t get it running locally. \
+And honestly, it was overkill. A simple WebDAV server would do, so I tried a few and settled on `dufs`. It’s good enough for now. I might revisit Jackrabbit later if the extra features become useful.
 
-Searched "webdav" on GitHub, sorted by stars, and skimmed the top hits.
+Searched "webdav" on GitHub, sorted by stars, and skimmed the top hits. \
 Filestash stood out. The missing piece I didn’t know I needed—until I did.
 
 [^not-cms]:  It's not a CMS itself, but you can build one on top of it. Adobe Experience Manager does this, exposing content via a RESTful API.
@@ -38,46 +38,49 @@ Suppose you are working on a complex data-heavy system, like a business intellig
 
 You need to debug its internal data processing pipelines--how data changes from stage to stage, from start to finish. \
 The QA team might benefit from checking some specific pieces of information that are otherwise hard to validate end-to-end. \
-Your PM might ask you to just send them the actual Excel file and formulas being used, so you have to generate a file[^maybe-file-like], copy it, and email it. This might happen more than once as business requirements and implementation change.
+Your PM might ask you to just send them the actual Excel file and formulas being used, so you have to generate a file\*, copy it, and email it. This might happen more than once as business requirements and implementation change.
 
-[^maybe-file-like]: There might be no file or even file-like thing. You may be working with data frames (Pandas or [Polars][polars]) or event streams or whatnot.
+You see, that was a recurring pain point. Poor DX.
 
-[polars]: https://github.com/pola-rs/polars
+(\* There might be no file or even file-like thing. You may be working with data frames (Pandas or [Polars][polars]), event streams, and whatnot.)
 
-You see, that was a common pain point. Poor DX.
 
 ### The idea
 
-The **ideal approach** would be to automatically export the in-memory data as a file, and upload it to Google Drive, making it easy to open on Google Sheets, for example.
+The **ideal approach** would be to automatically export the in-memory data as a file and upload it to Google Drive, making it easy to open on Google Sheets, for example.
 
 Up until recently, my **crude approach** was to write data as `.tsv` in a local folder when running on my machine. I would open it using LibreOffice Calc or import it into Google Sheets since they support `.tsv`.
 
-And so I came up with a more **streamlined approach**: Save data as Excel to a WebDAV server (Apache Jackrabbit or probably a simpler more dedicated server), and open it in Filestash.
-Filestash is a web client that supports WebDAV and previews Excel files.
-Both the server and client can be dockerized, so we can use them during local or remote dev.
+After going down one too many rabbit holes--and nearly building a content repository just to debug Excel files--I stumbled onto a simpler, more **streamlined approach**:
 
-WebDAV gives you a filesystem abstraction over HTTP, which nicely glues everything together:
+Treat in-memory data as file, upload it to a WebDAV server, and inspect with Filestash.
 
-Possible wins:
+Filestash is a web client that supports WebDAV and previews Excel files via via Collabora Online. The whole thing is Dockerized, so spinning it up locally or remotely is dead simple.
+
+**Big wins:**
 
 - Simplifies debugging.
 
 - Better transparency and observability.
 
-- We can log the saved file's URL using any existing logging infrastructure (e.g. OpenObserve or Datadog).
+- We can log the saved file's URL using any existing logging infrastructure (e.g. Datadog, Sentry, or OpenObserve).
 
 
 ## The architecture
 
 > ![Backend, WebDAV server, web file manager (Filestash), web office (Collabora Online)](./components.tldr.png)
-> Main components and used protocols
+> Main components and protocols
 
 
 ### Why WebDAV?
-WebDAV is an HTTP-based **_standard_** with broad support across OS file managers (e.g., Windows Explorer or [Mac's thing][m]). It's simple to integrate[^filestash-webdav-plugin], future-proof enough, and has many server implementations: Jackrabbit, Apache Server, and various standalone options.
 
-Possible alternatives:
+WebDAV is an HTTP-based **_standard_** with broad support across OS file managers (e.g., Windows Explorer or [Mac's thing][mac-webdav]). It's simple to integrate[^filestash-webdav-plugin], future-proof enough, and has many server implementations: Jackrabbit, Apache Server, and various standalone options.
+
+**Possible alternatives:**
+
 - [ ] MinIO (S3-compatible local storage).
+  * I've tested MinIO. See `/debug-drive-minio` in the GitHub repo.
+
 - [ ] FTP (FTPS or SFTP).
 
 [^filestash-webdav-plugin]: WebDAV is so simple that you can create a client using any HTTP client.
@@ -104,8 +107,8 @@ Cons:
 - LibreOffice Calc (and the web version) handles `.csv` and `.tsv` just fine, but Filestash opens them in a basic text viewer.
 As far as I can tell, there’s no UI option to change the default viewer or editor per file type.
 You’d probably need to dive into plugin code (written in Go) and recompile it to get that working.
-  * Workaround: Just convert the `.tsv` to a proper Excel file.
 
+  * Workaround: Just convert the `.tsv` to a proper Excel file.
 
 **Possible alternatives:**
 
@@ -128,9 +131,7 @@ Still, we could use simple deletion logic (e.g. older than 3 days) via a `cron` 
 Options:
   * [x] Install a WebDAV client (I mean, what's a new JS dependency).
   * [ ] Use a WebDAV server that has a RESTful API: [SFTPGo][sftpgo], for example.
-  * [ ] Use S3[^just-use-s3]. It works best if we need a REST API. 
-
-[^just-use-s3]: I've tested MinIO (an S3 compatible storage). See `/debug-drive-minio` in the GitHub repo.
+  * [ ] Use S3/MinIO. It works best if we only need a REST API. 
 
 - What about performance?
   * Each job generates only a couple of files.
@@ -185,12 +186,6 @@ const client = createClient("http://192.168.100.11:5000/", { username: "admin", 
 await client.putFileContents("/omega/deep/test.txt", "some text");
 ```
 
-List files:
-```js
-const directoryItems = await client.getDirectoryContents("/");
-console.table(directoryItems);
-```
-
 ### Filestash
 
 See [Filestash install guide](https://www.filestash.app/docs/install-and-upgrade/).
@@ -200,7 +195,7 @@ Basically, just use Docker Compose to set up Filestash and Collabora Online and 
 
 ## Making it reusable
 
-Instead of wiring the WebDAV logic directly into each job, I abstracted it into a helper:
+Instead of wiring the WebDAV logic directly into each task, I abstracted it into a helper:
 ```ts
 async function saveToWebdav(filename: string, data: Buffer | string) {
   const client = createClient(WEB_DAV_URL, { username, password });
@@ -247,10 +242,11 @@ END.
 
 [aem-rest-apis]: https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/screens-as-cloud-service/developing-screens-cloud/rest-apis-screens-cloud "REST APIs | Adobe Experience Manager"
 
+[polars]: https://github.com/pola-rs/polars
+
 [apache-jackrabbit]: https://jackrabbit.apache.org/
 [dufs]: https://github.com/sigoden/dufs
 [sftpgo]: https://github.com/drakkan/sftpgo
-
 [npm-webdav]: https://github.com/perry-mitchell/webdav-client
 [mac-webdav]: https://support.apple.com/en-gb/guide/mac-help/mchlp1546/mac "Connect to or disconnect from a WebDAV server on Mac – Apple Support (UK)"
 
