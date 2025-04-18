@@ -14,7 +14,7 @@ services:
     ports:
     - "8334:8334"
     volumes:
-    - filestash_vol:/app/data/state/
+    - filestash_data:/app/data/state/
 
   wopi_server:
     container_name: filestash_wopi
@@ -40,9 +40,9 @@ services:
     ports:
       - "5000:5000"
     volumes:
-      - dufs_vol:/webdav-data
+      - dufs_data:/webdav-data
     restart: unless-stopped
 
 volumes:
-    filestash_vol: {}
-    dufs_vol: {}
+    filestash_data: {}
+    dufs_data: {}

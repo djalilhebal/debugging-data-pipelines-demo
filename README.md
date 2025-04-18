@@ -9,7 +9,7 @@ See: [Pie Generator (live)](https://debugging-data-pipelines-demo.vercel.app/pie
 
 Assuming you already have installed Node (e.g. via `nvm`) and Docker Compose (e.g. via `apt`).
 
-Demo API (Pie app)
+Demo API (Pie app):
 ```sh
 cd pie-generator-backend
 
@@ -18,11 +18,10 @@ npm install
 npm start
 ```
 
-Filestash and stuff:
+Debug Drive (dufs WebDAV server, Filestash, and Collabora Online):
 ```sh
 cd debug-drive
 
-# Sets up dufs WebDAV server, Filestash, and Collabora Online
 sudo docker compose up -d
 
 sudo docker compose down
