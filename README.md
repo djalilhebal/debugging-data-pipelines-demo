@@ -15,6 +15,9 @@ cd pie-generator-backend
 
 npm install
 
+export WEBDAV_URL=http://192.168.100.11:5000
+export WEBDAV_USERNAME=admin
+export WEBDAV_PASSWORD=admin
 npm start
 ```
 
