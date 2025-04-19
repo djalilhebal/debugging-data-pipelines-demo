@@ -4,6 +4,9 @@ For [Debugging data pipelines: From memory to file with WebDAV](https://kunzite.
 
 See: [Pie Generator (live)](https://debugging-data-pipelines-demo.vercel.app/pie?a=10&b=20&c=70)
 
+> ![](screenshot-pie-a-10-b-20-c-70.png)
+> Output file downloaded from `GET /pie?a=10&b=20&c=70`
+
 
 ## Running locally
 
